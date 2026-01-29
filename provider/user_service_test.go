@@ -99,8 +99,8 @@ var port, _ = utils.GetFreePort()
 var sallyExists = &repository.UserRepository{
 	Users: map[string]*model.User{
 		"sally": &model.User{
-			FirstName: "Jean-Marie",
-			LastName:  "de La Beaujardière😀😍",
+			FirstName: "Joana-Maria",
+			LastName:  "de Bom jardim",
 			Username:  "sally",
 			Type:      "admin",
 			ID:        10,
@@ -113,8 +113,8 @@ var sallyDoesNotExist = &repository.UserRepository{}
 var sallyUnauthorized = &repository.UserRepository{
 	Users: map[string]*model.User{
 		"sally": &model.User{
-			FirstName: "Jean-Marie",
-			LastName:  "de La Beaujardière😀😍",
+			FirstName: "Joana-Maria",
+			LastName:  "de Bom jardim",
 			Username:  "sally",
 			Type:      "blocked",
 			ID:        10,

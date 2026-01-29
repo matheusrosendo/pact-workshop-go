@@ -171,7 +171,7 @@ func TestClientPact_Health(t *testing.T) {
 		AddInteraction().
 		Given("The service is alive").
 		UponReceiving("A request to check the health of the service").
-		WithRequestPathMatcher("GET", Regex("/health", "/health")).
+		WithRequestPathMatcher("GET", Regex("/healthasdf", "/healthasdf")).
 		WillRespondWith(200, func(b *consumer.V2ResponseBuilder) {
 			b.Header("Content-Type", Term("text/plain", `text\/plain`))
 		}).

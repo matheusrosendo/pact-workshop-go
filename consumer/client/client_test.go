@@ -48,7 +48,7 @@ func TestClientUnit_GetUser(t *testing.T) {
 func TestClientUnit_Health(t *testing.T) {
 	// Setup mock server
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		assert.Equal(t, req.URL.String(), "/health")
+		assert.Equal(t, req.URL.String(), "/healthasdf")
 		rw.Write([]byte("OK"))
 	}))
 	defer server.Close()

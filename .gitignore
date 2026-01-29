@@ -10,10 +10,21 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-/pact
-/pacts
-log
-logs
+
+# Pact-related directories (root level - legacy)
+/pact/
+/pacts/
+
+# Pact-related directories (service level)
+/consumer/pact/
+/consumer/pacts/
+/consumer/log/
+/consumer/logs/
+
+/provider/pact/
+/provider/pacts/
+/provider/log/
+/provider/logs/
 
 # Vendoring directory
 /vendor/

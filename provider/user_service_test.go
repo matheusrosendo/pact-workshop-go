@@ -12,8 +12,8 @@ import (
 	"github.com/pact-foundation/pact-go/v2/models"
 	"github.com/pact-foundation/pact-go/v2/provider"
 	"github.com/pact-foundation/pact-go/v2/utils"
-	"github.com/pact-foundation/pact-workshop-go/model"
-	"github.com/pact-foundation/pact-workshop-go/provider/repository"
+	"github.com/pact-foundation/pact-workshop-go/provider/internal/model"
+	"github.com/pact-foundation/pact-workshop-go/provider/internal/repository"
 )
 
 // The Provider verification

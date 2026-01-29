@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/pact-foundation/pact-workshop-go/model"
+import "github.com/pact-foundation/pact-workshop-go/provider/internal/model"
 
 // UserRepository is an in-memory db representation of our set of users
 type UserRepository struct {

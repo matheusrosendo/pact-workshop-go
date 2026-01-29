@@ -92,7 +92,7 @@ func GetHTTPHandler() *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/user/", commonMiddleware(GetUser))
 	mux.HandleFunc("/users/", commonMiddleware(GetUsers))
-	mux.HandleFunc("/health", Health)
+	mux.HandleFunc("/healthasdf", Health)
 
 	return mux
 }

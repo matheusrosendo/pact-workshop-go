@@ -37,8 +37,14 @@ func TestPactProvider(t *testing.T) {
 		BrokerPassword:             os.Getenv("PACT_BROKER_PASSWORD"),
 		PublishVerificationResults: true,
 		ProviderVersion:            os.Getenv("VERSION_COMMIT"),
-		StateHandlers:              stateHandlers,
-		RequestFilter:              fixBearerToken,
+		ConsumerVersionSelectors: []provider.Selector{
+			&provider.ConsumerVersionSelector{Branch: os.Getenv("VERSION_BRANCH")},
+			// Temporarily disabled to avoid conflicts with old master/production contracts
+			// &provider.ConsumerVersionSelector{MainBranch: true},
+			// &provider.ConsumerVersionSelector{DeployedOrReleased: true},
+		},
+		StateHandlers: stateHandlers,
+		RequestFilter: fixBearerToken,
 		BeforeEach: func() error {
 			userRepository = sallyExists
 			return nil

@@ -5,11 +5,11 @@ import (
 	"net"
 	"net/http"
 
-	provider "github.com/pact-foundation/pact-workshop-go/provider"
+	"github.com/pact-foundation/pact-workshop-go/provider/internal/service"
 )
 
 func main() {
-	mux := provider.GetHTTPHandler()
+	mux := service.GetHTTPHandler()
 
 	ln, err := net.Listen("tcp", ":8080")
 	if err != nil {

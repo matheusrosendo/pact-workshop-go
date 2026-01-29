@@ -1,6 +1,6 @@
 //go:build integration
 
-package client
+package consumer
 
 import (
 	"fmt"
@@ -13,6 +13,7 @@ import (
 	"github.com/pact-foundation/pact-go/v2/consumer"
 	"github.com/pact-foundation/pact-go/v2/log"
 	"github.com/pact-foundation/pact-go/v2/matchers"
+	"github.com/pact-foundation/pact-workshop-go/consumer/internal/client"
 	"github.com/pact-foundation/pact-workshop-go/consumer/internal/model"
 	"github.com/stretchr/testify/assert"
 )
@@ -35,14 +36,14 @@ type S = matchers.S
 type Map = matchers.MapMatcher
 
 var u *url.URL
-var client *Client
+var apiClient *client.Client
 
 func TestMain(m *testing.M) {
 	log.SetLogLevel("INFO")
 	os.Exit(m.Run())
 }
 
-func TestClientPact_GetUser(t *testing.T) {
+func TestUserServicePact_GetUser(t *testing.T) {
 	mockProvider, err := consumer.NewV2Pact(consumer.MockHTTPProviderConfig{
 		Consumer: os.Getenv("CONSUMER_NAME"),
 		Provider: os.Getenv("PROVIDER_NAME"),
@@ -73,12 +74,12 @@ func TestClientPact_GetUser(t *testing.T) {
 				u, _ = url.Parse("http://" + config.Host + ":" + strconv.Itoa(config.Port))
 
 				// Initialise the API client and point it at the Pact mock server
-				client = &Client{
+				apiClient = &client.Client{
 					BaseURL: u,
 				}
 
 				// // Execute the API client
-				user, err := client.WithToken("2019-01-01").GetUser(id)
+				user, err := apiClient.WithToken("2019-01-01").GetUser(id)
 
 				// // Assert basic fact
 				if user.ID != id {
@@ -113,13 +114,13 @@ func TestClientPact_GetUser(t *testing.T) {
 				u, _ = url.Parse("http://" + config.Host + ":" + strconv.Itoa(config.Port))
 
 				// Initialise the API client and point it at the Pact mock server
-				client = &Client{
+				apiClient = &client.Client{
 					BaseURL: u,
 				}
 
 				// // Execute the API client
-				_, err := client.WithToken("2019-01-01").GetUser(id)
-				assert.Equal(t, ErrNotFound, err)
+				_, err := apiClient.WithToken("2019-01-01").GetUser(id)
+				assert.Equal(t, client.ErrNotFound, err)
 				return nil
 			})
 		assert.NoError(t, err)
@@ -144,13 +145,13 @@ func TestClientPact_GetUser(t *testing.T) {
 				u, _ = url.Parse("http://" + config.Host + ":" + strconv.Itoa(config.Port))
 
 				// Initialise the API client and point it at the Pact mock server
-				client = &Client{
+				apiClient = &client.Client{
 					BaseURL: u,
 				}
 
 				// // Execute the API client
-				_, err := client.WithToken("").GetUser(id)
-				assert.Equal(t, ErrUnauthorized, err)
+				_, err := apiClient.WithToken("").GetUser(id)
+				assert.Equal(t, client.ErrUnauthorized, err)
 				return nil
 			})
 		assert.NoError(t, err)
@@ -158,7 +159,7 @@ func TestClientPact_GetUser(t *testing.T) {
 
 }
 
-func TestClientPact_Health(t *testing.T) {
+func TestUserServicePact_Health(t *testing.T) {
 	mockProvider, err := consumer.NewV2Pact(consumer.MockHTTPProviderConfig{
 		Consumer: os.Getenv("CONSUMER_NAME"),
 		Provider: os.Getenv("PROVIDER_NAME"),
@@ -182,12 +183,12 @@ func TestClientPact_Health(t *testing.T) {
 			u, _ = url.Parse("http://" + config.Host + ":" + strconv.Itoa(config.Port))
 
 			// Initialise the API client and point it at the Pact mock server
-			client = &Client{
+			apiClient = &client.Client{
 				BaseURL: u,
 			}
 
 			// // Execute the API client
-			err := client.Health()
+			err := apiClient.Health()
 			assert.NoError(t, err)
 			return nil
 		})

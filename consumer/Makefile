@@ -21,8 +21,8 @@ help:
 	@echo "  install-cli        - Install Pact CLI tools"
 	@echo ""
 	@echo "Testing:"
-	@echo "  test-unit          - Run unit tests"
 	@echo "  test-pact          - Run Pact consumer tests (generates contracts)"
+	@echo "  consumer           - Alias for test-pact"
 	@echo ""
 	@echo "Publishing:"
 	@echo "  publish            - Publish contracts to Pact Broker"
@@ -38,12 +38,7 @@ help:
 	@echo "  clean              - Clean generated pact files"
 	@echo ""
 	@echo "Full workflow:"
-	@echo "  make install-cli && make test-unit && make test-pact && make publish"
-
-.PHONY: test-unit
-test-unit:
-	@echo "--- 🔨 Running Consumer Unit Tests"
-	go test -tags=unit -count=1 ./internal/client -run 'TestClientUnit' -v
+	@echo "  make install-cli && make test-pact && make publish"
 
 .PHONY: test-pact
 test-pact:
@@ -55,7 +50,7 @@ test-pact:
 	PROVIDER_NAME=GoUserService \
 	PACT_DIR=$(PACT_DIR) \
 	LOG_DIR=$(LOG_DIR) \
-	go test -tags=integration -count=1 ./internal/client -run 'TestClientPact' -v
+	go test -tags=integration -count=1 ./internal/pact/consumer -run 'TestUserServicePact' -v
 
 # Alias for backward compatibility
 .PHONY: consumer

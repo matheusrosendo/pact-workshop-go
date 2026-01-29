@@ -1,4 +1,4 @@
-package provider
+package service
 
 import (
 	"encoding/json"
@@ -29,6 +29,16 @@ var userRepository = &repository.UserRepository{
 // Crude time-bound "bearer" token
 func getAuthToken() string {
 	return fmt.Sprintf("Bearer %s", time.Now().Format("2006-01-02T15:04"))
+}
+
+// GetAuthToken returns the current auth token (exported for testing)
+func GetAuthToken() string {
+	return getAuthToken()
+}
+
+// SetUserRepository sets the user repository (exported for testing)
+func SetUserRepository(repo *repository.UserRepository) {
+	userRepository = repo
 }
 
 // IsAuthenticated checks for a correct bearer token

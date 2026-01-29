@@ -14,6 +14,7 @@ import (
 	"github.com/pact-foundation/pact-go/v2/utils"
 	"github.com/pact-foundation/pact-workshop-go/provider/internal/model"
 	"github.com/pact-foundation/pact-workshop-go/provider/internal/repository"
+	"github.com/pact-foundation/pact-workshop-go/provider/internal/service"
 )
 
 // The Provider verification
@@ -46,7 +47,7 @@ func TestPactProvider(t *testing.T) {
 		StateHandlers: stateHandlers,
 		RequestFilter: fixBearerToken,
 		BeforeEach: func() error {
-			userRepository = sallyExists
+			service.SetUserRepository(sallyExists)
 			return nil
 		},
 	})
@@ -62,7 +63,7 @@ func fixBearerToken(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Only set the correct bearer token, if one was provided in the first place
 		if r.Header.Get("Authorization") != "" {
-			r.Header.Set("Authorization", getAuthToken())
+			r.Header.Set("Authorization", service.GetAuthToken())
 		}
 		next.ServeHTTP(w, r)
 	})
@@ -70,11 +71,11 @@ func fixBearerToken(next http.Handler) http.Handler {
 
 var stateHandlers = models.StateHandlers{
 	"User sally exists": func(setup bool, s models.ProviderState) (models.ProviderStateResponse, error) {
-		userRepository = sallyExists
+		service.SetUserRepository(sallyExists)
 		return models.ProviderStateResponse{}, nil
 	},
 	"User sally does not exist": func(setup bool, s models.ProviderState) (models.ProviderStateResponse, error) {
-		userRepository = sallyDoesNotExist
+		service.SetUserRepository(sallyDoesNotExist)
 		return models.ProviderStateResponse{}, nil
 	},
 }
@@ -82,7 +83,7 @@ var stateHandlers = models.StateHandlers{
 // Starts the provider API with hooks for provider states.
 // This essentially mirrors the main.go file, with extra routes added.
 func startInstrumentedProvider() {
-	mux := GetHTTPHandler()
+	mux := service.GetHTTPHandler()
 
 	ln, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {

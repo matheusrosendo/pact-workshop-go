@@ -58,7 +58,7 @@ test-pact:
 	PACT_BROKER_URL=$(PACT_BROKER_URL) \
 	PACT_BROKER_USERNAME=$(PACT_BROKER_USERNAME) \
 	PACT_BROKER_PASSWORD=$(PACT_BROKER_PASSWORD) \
-	go test -tags=integration -count=1 . -run 'TestPactProvider' -v
+	go test -tags=integration -count=1 ./internal/pact/provider -run 'TestPactProvider' -v
 
 # Alias for backward compatibility
 .PHONY: provider

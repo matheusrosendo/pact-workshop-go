@@ -1,3 +1,4 @@
+//go:build unit
 // +build unit
 
 package client
@@ -42,4 +43,21 @@ func TestClientUnit_GetUser(t *testing.T) {
 
 	// Assert basic fact
 	assert.Equal(t, user.ID, userID)
+}
+
+func TestClientUnit_Health(t *testing.T) {
+	// Setup mock server
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		assert.Equal(t, req.URL.String(), "/health")
+		rw.Write([]byte("OK"))
+	}))
+	defer server.Close()
+
+	// Setup client
+	u, _ := url.Parse(server.URL)
+	client := &Client{
+		BaseURL: u,
+	}
+	err := client.Health()
+	assert.NoError(t, err)
 }

@@ -37,9 +37,12 @@ type Map = matchers.MapMatcher
 var u *url.URL
 var client *Client
 
-func TestClientPact_GetUser(t *testing.T) {
-
+func TestMain(m *testing.M) {
 	log.SetLogLevel("INFO")
+	os.Exit(m.Run())
+}
+
+func TestClientPact_GetUser(t *testing.T) {
 	mockProvider, err := consumer.NewV2Pact(consumer.MockHTTPProviderConfig{
 		Consumer: os.Getenv("CONSUMER_NAME"),
 		Provider: os.Getenv("PROVIDER_NAME"),
@@ -153,4 +156,40 @@ func TestClientPact_GetUser(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
+}
+
+func TestClientPact_Health(t *testing.T) {
+	mockProvider, err := consumer.NewV2Pact(consumer.MockHTTPProviderConfig{
+		Consumer: os.Getenv("CONSUMER_NAME"),
+		Provider: os.Getenv("PROVIDER_NAME"),
+		LogDir:   os.Getenv("LOG_DIR"),
+		PactDir:  os.Getenv("PACT_DIR"),
+	})
+	assert.NoError(t, err)
+
+	err = mockProvider.
+		AddInteraction().
+		Given("The service is alive").
+		UponReceiving("A request to check the health of the service").
+		WithRequestPathMatcher("GET", Regex("/health", "/health")).
+		WillRespondWith(200, func(b *consumer.V2ResponseBuilder) {
+			b.Header("Content-Type", Term("text/plain", `text\/plain`))
+		}).
+		ExecuteTest(t, func(config consumer.MockServerConfig) error {
+			// Act: test our API client behaves correctly
+
+			// Get the Pact mock server URL
+			u, _ = url.Parse("http://" + config.Host + ":" + strconv.Itoa(config.Port))
+
+			// Initialise the API client and point it at the Pact mock server
+			client = &Client{
+				BaseURL: u,
+			}
+
+			// // Execute the API client
+			err := client.Health()
+			assert.NoError(t, err)
+			return nil
+		})
+	assert.NoError(t, err)
 }

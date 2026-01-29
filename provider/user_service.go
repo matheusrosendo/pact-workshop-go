@@ -78,6 +78,12 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	w.Write(resBody)
 }
 
+func Health(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
+}
+
 func commonMiddleware(f http.HandlerFunc) http.HandlerFunc {
 	return WithCorrelationID(IsAuthenticated(f))
 }
@@ -86,6 +92,7 @@ func GetHTTPHandler() *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/user/", commonMiddleware(GetUser))
 	mux.HandleFunc("/users/", commonMiddleware(GetUsers))
+	mux.HandleFunc("/health", Health)
 
 	return mux
 }

@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/pact-foundation/pact-workshop-go/model"
+	"github.com/pact-foundation/pact-workshop-go/consumer/internal/model"
 )
 
 // Client is our consumer interface to the Order API

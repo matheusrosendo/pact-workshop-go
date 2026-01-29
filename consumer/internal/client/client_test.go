@@ -12,7 +12,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 
-	"github.com/pact-foundation/pact-workshop-go/model"
+	"github.com/pact-foundation/pact-workshop-go/consumer/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 

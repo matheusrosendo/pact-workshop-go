@@ -13,7 +13,7 @@ import (
 	"github.com/pact-foundation/pact-go/v2/consumer"
 	"github.com/pact-foundation/pact-go/v2/log"
 	"github.com/pact-foundation/pact-go/v2/matchers"
-	"github.com/pact-foundation/pact-workshop-go/model"
+	"github.com/pact-foundation/pact-workshop-go/consumer/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 

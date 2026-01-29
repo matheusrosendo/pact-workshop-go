@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/pact-foundation/pact-workshop-go/consumer/client"
+	"github.com/pact-foundation/pact-workshop-go/consumer/internal/client"
 )
 
 var token = time.Now().Format("2006-01-02T15:04")
